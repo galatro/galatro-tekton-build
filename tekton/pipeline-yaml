@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: nodejs-pipeline
+spec:
+  workspaces:
+    - name: pipeline-shared-data
+  tasks:
+    - name: clone
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      params:
+        - name: url
+          value: https://github.com/galatro/galatro-tekton-build
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    - name: build-and-push-image
+      runAfter:
+        - clone
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      params:
+        - name: IMAGE
+          value: "quay.io/galatro/galatro-app:$(tasks.clone.results.commit)"
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+
