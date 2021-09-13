@@ -28,4 +28,22 @@ spec:
       workspaces:
         - name: source
           workspace: pipeline-shared-data
-
+    - name: kustomize
+      runAfter:
+        - build-and-push-image
+      taskRef:
+        name: kustomize
+      params:
+        - name: app-name
+          value: galatrog-app
+        - name: app-namespace
+          value: "$(context.pipelineRun.namespace)"
+        - name: source-repo
+          value: https://github.com/galatro/galatro-tekton-build
+        - name: commit
+          value: "$(tasks.clone.results.commit)"
+        - name: image-repo
+          value: quay.io/galatro/galatro-app
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data

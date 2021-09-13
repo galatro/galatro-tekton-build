@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: galatrog-app
+    app.kubernetes.io/instance: galatrog-app-instance
+    app.kubernetes.io/name: galatrog-app
+  name: galatrog-app
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/instance: galatrog-app-instance
+    app.kubernetes.io/name: galatrog-app
+  sessionAffinity: None
+  type: ClusterIP
