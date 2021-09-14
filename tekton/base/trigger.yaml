@@ -50,7 +50,8 @@ spec:
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
-      generateName: nodejs-pipeline-run-
+      metadata:
+        generateName: nodejs-pipeline-run-
       spec:
         pipelineRef:
           name: nodejs-pipeline
